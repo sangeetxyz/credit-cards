@@ -1,26 +1,283 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --geist-primary: #ededed;
+  --geist-secondary: #a1a1a1;
+  --geist-tertiary: #0070f3;
+  --geist-background-100: #0a0a0a;
+  --geist-background-200: #000000;
+  --geist-gray-100: #1a1a1a;
+  --geist-gray-200: #1f1f1f;
+  --geist-gray-300: #292929;
+  --geist-gray-400: #333333;
+  --geist-gray-500: #444444;
+  --geist-gray-600: #666666;
+  --geist-gray-700: #888888;
+  --geist-gray-800: #999999;
+  --geist-gray-900: #a1a1a1;
+  --geist-gray-1000: #ededed;
+  --geist-gray-alpha-100: #ffffff0a;
+  --geist-gray-alpha-200: #ffffff14;
+  --geist-gray-alpha-300: #ffffff1a;
+  --geist-gray-alpha-400: #ffffff1f;
+  --geist-gray-alpha-500: #ffffff36;
+  --geist-gray-alpha-600: #ffffff3d;
+  --geist-gray-alpha-700: #ffffff70;
+  --geist-blue-700: #0070f3;
+  --geist-red-800: #e5484d;
+  --geist-green-700: #46a758;
+  --geist-radius-sm: 6px;
+  --geist-radius-md: 12px;
+  --geist-radius-lg: 16px;
+  --geist-shadow-raised: 0 0 0 1px var(--geist-gray-alpha-400);
+  --geist-shadow-popover:
+    0 0 0 1px var(--geist-gray-alpha-400), 0 8px 30px rgba(0, 0, 0, 0.5);
+  --geist-shadow-modal:
+    0 0 0 1px var(--geist-gray-alpha-400), 0 16px 70px rgba(0, 0, 0, 0.65);
+  --geist-ease: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  --geist-focus-ring:
+    0 0 0 2px var(--geist-background-100), 0 0 0 4px var(--geist-blue-700);
+
+  --background: var(--geist-background-200);
+  --foreground: var(--geist-gray-1000);
+  --muted: var(--geist-gray-900);
+  --muted-subtle: var(--geist-gray-700);
+  --border: var(--geist-gray-alpha-400);
+  --surface: var(--geist-background-100);
+  --accent: var(--geist-gray-1000);
+  --accent-fg: var(--geist-background-100);
+  --danger: var(--geist-red-800);
+  --success: var(--geist-green-700);
+  --radius-card: 16px;
+  --radius-fab: var(--radius-card);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-subtle: var(--muted-subtle);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Geist typography */
+.text-heading-32 {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -1.28px;
+}
+
+.text-heading-24 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.96px;
+}
+
+.text-heading-20 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.4px;
+}
+
+.text-heading-16 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+}
+
+.text-button-14 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.text-label-14 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.text-label-13 {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.text-label-12 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.text-copy-14 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.text-copy-13 {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.text-label-14-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.geist-focus:focus-visible {
+  outline: none;
+  box-shadow: var(--geist-focus-ring);
+}
+
+.wallet-bg {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgba(255, 255, 255, 0.04),
+      transparent 55%
+    ), var(--geist-background-200);
+}
+
+/* Wallet card tiles */
+.card-surface {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-accent-edge, rgba(255, 255, 255, 0.1));
+  background: var(--card-surface-bg, #080808);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -22px 44px var(--card-accent-depth, transparent),
+    0 16px 40px -20px var(--card-accent-glow, transparent);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.card-accent,
+.card-accent-bloom,
+.card-accent-depth,
+.card-shine,
+.card-accent-rim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.card-accent-bloom {
+  background: radial-gradient(
+    ellipse 92% 70% at var(--card-bloom-x, 84%) var(--card-bloom-y, 8%),
+    var(--card-accent-bloom, hsla(215, 50%, 46%, 0.22)),
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+}
+
+.card-accent {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 92% 10%,
+      var(--card-accent-soft, hsla(215, 50%, 46%, 0.28)),
+      transparent 56%
+    ),
+    radial-gradient(
+      ellipse 68% 52% at 8% 92%,
+      var(--card-accent-faint, hsla(245, 42%, 34%, 0.18)),
+      transparent 52%
+    );
+  mix-blend-mode: screen;
+}
+
+.card-accent-depth {
+  background: radial-gradient(
+    ellipse 56% 44% at var(--card-depth-x, 14%) var(--card-depth-y, 86%),
+    var(--card-accent-depth, hsla(275, 42%, 34%, 0.16)),
+    transparent 58%
+  );
+  mix-blend-mode: soft-light;
+}
+
+.card-shine {
+  background: linear-gradient(
+    118deg,
+    transparent 24%,
+    var(--card-accent-shine, rgba(255, 255, 255, 0.1)) 42%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 66%
+  );
+  opacity: 0.85;
+}
+
+.card-accent-rim {
+  background: linear-gradient(
+    155deg,
+    var(--card-accent-rim, hsla(215, 42%, 24%, 0.12)) 0%,
+    transparent 34%,
+    transparent 72%,
+    var(--card-accent-secondary, hsla(245, 38%, 20%, 0.1)) 100%
+  );
+  opacity: 0.8;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--geist-gray-alpha-500);
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.card-tile-scene {
+  position: relative;
+  perspective: 900px;
+}
+
+.card-tilt-root {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
