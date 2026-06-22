@@ -26,3 +26,10 @@ export const flipTransition = {
   duration: 0.5,
   ease: [0.4, 0, 0.2, 1] as const,
 };
+
+export const flipSpring = {
+  type: "spring" as const,
+  stiffness: 280,
+  damping: 22,
+  mass: 0.85,
+};
