@@ -3,13 +3,13 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { fadeUp, GEIST_EASE } from "@/lib/motion";
 import type { CreditCard } from "@/lib/types";
-import { CardSkeleton } from "./card-skeleton";
+import { CardGallerySkeleton } from "./card-skeleton";
 import { CreditCardVisual } from "./credit-card-visual";
 import { EmptyState } from "./empty-state";
 
 type CardGalleryProps = {
   cards: CreditCard[];
-  isHydrated: boolean;
+  isLoading: boolean;
   onAdd: () => void;
   onEdit: (card: CreditCard) => void;
   onDelete: (card: CreditCard) => void;
@@ -30,7 +30,7 @@ const itemVariants = {
 
 export function CardGallery({
   cards,
-  isHydrated,
+  isLoading,
   onAdd,
   onEdit,
   onDelete,
@@ -38,12 +38,8 @@ export function CardGallery({
 }: CardGalleryProps) {
   const reduceMotion = useReducedMotion();
 
-  if (!isHydrated) {
-    return (
-      <div className="flex justify-center px-4 py-10">
-        <CardSkeleton />
-      </div>
-    );
+  if (isLoading) {
+    return <CardGallerySkeleton />;
   }
 
   if (cards.length === 0) {

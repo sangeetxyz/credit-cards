@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { assertGateUnlocked } from "@/lib/gate-session";
 import { rerollCardColor } from "@/lib/db/cards";
 import { formatDbError } from "@/lib/db";
 
@@ -9,6 +10,9 @@ type RouteContext = {
 };
 
 export async function POST(_request: Request, context: RouteContext) {
+  const gateResponse = await assertGateUnlocked();
+  if (gateResponse) return gateResponse;
+
   try {
     const { id } = await context.params;
     const card = await rerollCardColor(id);

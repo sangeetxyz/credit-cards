@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { assertGateUnlocked } from "@/lib/gate-session";
 import { deleteCreditCard, updateCreditCard } from "@/lib/db/cards";
 import { formatDbError } from "@/lib/db";
 import type { CardFormData } from "@/lib/types";
@@ -10,6 +11,9 @@ type RouteContext = {
 };
 
 export async function PATCH(request: Request, context: RouteContext) {
+  const gateResponse = await assertGateUnlocked();
+  if (gateResponse) return gateResponse;
+
   try {
     const { id } = await context.params;
     const data = (await request.json()) as CardFormData;
@@ -31,6 +35,9 @@ export async function PATCH(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const gateResponse = await assertGateUnlocked();
+  if (gateResponse) return gateResponse;
+
   try {
     const { id } = await context.params;
     const deleted = await deleteCreditCard(id);

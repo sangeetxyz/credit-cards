@@ -16,7 +16,6 @@ async function readJson<T>(response: Response): Promise<T> {
 
 export function useCreditCards() {
   const [cards, setCards] = useState<CreditCard[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = useCallback(async () => {
@@ -48,7 +47,6 @@ export function useCreditCards() {
         }
       } finally {
         if (!cancelled) {
-          setIsHydrated(true);
           setIsLoading(false);
         }
       }
@@ -103,7 +101,6 @@ export function useCreditCards() {
 
   return {
     cards,
-    isHydrated,
     isLoading,
     addCard,
     updateCard,

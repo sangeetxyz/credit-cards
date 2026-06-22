@@ -270,6 +270,31 @@ body {
   html {
     scroll-behavior: auto;
   }
+
+  .skeleton-shimmer {
+    animation: none;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--geist-gray-alpha-100) 0%,
+    var(--geist-gray-alpha-300) 45%,
+    var(--geist-gray-alpha-100) 90%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
 
 .card-tile-scene {

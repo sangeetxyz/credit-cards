@@ -10,6 +10,7 @@ import { fadeUp } from "@/lib/motion";
 import type { CardFormData, CreditCard } from "@/lib/types";
 import { CardFormModal } from "./card-form-modal";
 import { CardGallery } from "./card-gallery";
+import { WalletHeaderSkeleton } from "./card-skeleton";
 
 type ModalState =
   | { open: false }
@@ -17,7 +18,7 @@ type ModalState =
   | { open: true; mode: "edit"; card: CreditCard };
 
 export function WalletShell() {
-  const { cards, isHydrated, addCard, updateCard, deleteCard, rerollCardColor } =
+  const { cards, isLoading, addCard, updateCard, deleteCard, rerollCardColor } =
     useCreditCards();
   const [modal, setModal] = useState<ModalState>({ open: false });
 
@@ -71,27 +72,29 @@ export function WalletShell() {
   return (
     <div className="wallet-bg relative">
       <div className="relative z-10 mx-auto min-h-dvh max-w-[1200px] px-3 pb-24 pt-8 min-[380px]:px-4 min-[380px]:pb-28 min-[380px]:pt-10 sm:px-6 sm:pt-12">
-        <motion.header
-          className="mb-6 flex items-center justify-between gap-4 min-[380px]:mb-8 sm:mb-10"
-          {...fadeUp}
-        >
-          <div className="flex min-w-0 items-center gap-3">
-            <span
-              aria-hidden
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--geist-radius-sm)] border border-[var(--geist-gray-alpha-400)] bg-[var(--geist-gray-alpha-100)]"
-            >
-              <Wallet className="h-4 w-4 text-[var(--geist-gray-800)]" />
-            </span>
+        {isLoading ? (
+          <WalletHeaderSkeleton />
+        ) : (
+          <motion.header
+            className="mb-6 flex items-center justify-between gap-4 min-[380px]:mb-8 sm:mb-10"
+            {...fadeUp}
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <span
+                aria-hidden
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--geist-radius-sm)] border border-[var(--geist-gray-alpha-400)] bg-[var(--geist-gray-alpha-100)]"
+              >
+                <Wallet className="h-4 w-4 text-[var(--geist-gray-800)]" />
+              </span>
 
-            <div className="min-w-0">
-              <p className="text-label-12 text-[var(--geist-gray-700)]">
-                Card Vault
-              </p>
-              <div className="mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                <h1 className="text-heading-20 tracking-[-0.4px] text-[var(--geist-gray-1000)] sm:text-heading-24 sm:tracking-[-0.96px]">
-                  Wallet
-                </h1>
-                {isHydrated ? (
+              <div className="min-w-0">
+                <p className="text-label-12 text-[var(--geist-gray-700)]">
+                  Card Vault
+                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <h1 className="text-heading-20 tracking-[-0.4px] text-[var(--geist-gray-1000)] sm:text-heading-24 sm:tracking-[-0.96px]">
+                    Wallet
+                  </h1>
                   <span className="inline-flex items-center rounded-full border border-[var(--geist-gray-alpha-400)] bg-[var(--geist-gray-alpha-100)] px-2 py-0.5 text-label-12 text-[var(--geist-gray-800)]">
                     <span className="font-mono tabular-nums text-[var(--geist-gray-1000)]">
                       {cards.length}
@@ -100,20 +103,20 @@ export function WalletShell() {
                       {cards.length === 1 ? "card" : "cards"}
                     </span>
                   </span>
-                ) : null}
+                </div>
               </div>
             </div>
-          </div>
 
-          <Button onClick={openCreate} className="hidden shrink-0 md:inline-flex">
-            <Plus className="h-4 w-4" />
-            Add Card
-          </Button>
-        </motion.header>
+            <Button onClick={openCreate} className="hidden shrink-0 md:inline-flex">
+              <Plus className="h-4 w-4" />
+              Add Card
+            </Button>
+          </motion.header>
+        )}
 
         <CardGallery
           cards={cards}
-          isHydrated={isHydrated}
+          isLoading={isLoading}
           onAdd={openCreate}
           onEdit={openEdit}
           onDelete={openEdit}
@@ -121,21 +124,23 @@ export function WalletShell() {
         />
       </div>
 
-      <motion.div
-        className="fixed bottom-4 right-3 z-30 min-[380px]:bottom-6 min-[380px]:right-4 md:hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-      >
-        <Button
-          onClick={openCreate}
-          size="icon"
-          className="rounded-[var(--radius-fab)] shadow-[var(--geist-shadow-popover)]"
-          aria-label="Add Card"
+      {!isLoading ? (
+        <motion.div
+          className="fixed bottom-4 right-3 z-30 min-[380px]:bottom-6 min-[380px]:right-4 md:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
         >
-          <Plus className="h-4 w-4" />
-        </Button>
-      </motion.div>
+          <Button
+            onClick={openCreate}
+            size="icon"
+            className="rounded-[var(--radius-fab)] shadow-[var(--geist-shadow-popover)]"
+            aria-label="Add Card"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </motion.div>
+      ) : null}
 
       <CardFormModal
         open={modal.open}
